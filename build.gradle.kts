@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version libs.versions.kotlin.asProvider().get() apply false
     alias(libs.plugins.spotless)
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 repositories {
