@@ -58,7 +58,7 @@ _You can find the latest version and changelogs in the [releases](https://github
 
 In order to make IDE aware of generated code, include generated sources as follows:
 
-<details>
+<details open>
   <summary><b>Gradle (Groovy)</b></summary>
 
 ```groovy
