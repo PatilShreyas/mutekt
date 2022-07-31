@@ -1,20 +1,17 @@
 # Mutekt
-(Pronunciation: _**/mjuːˈteɪt/**_, 'k' is silent).   
-Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP) which 
-generates compile-time safe code from annotation. _Made with ❤️ for Kotliners_.
-
-Refer to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
 
 [![Build](https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml/badge.svg)](https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml)
 [![Release](https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml/badge.svg)](https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/dev.shreyaspatil.mutekt/mutekt-codegen?label=Maven%20Central&logo=android&style=flat-square)](https://search.maven.org/artifact/dev.shreyaspatil.mutekt)
 [![GitHub](https://img.shields.io/github/license/PatilShreyas/mutekt?label=License)](LICENSE)
-
-[![Github Followers](https://img.shields.io/github/followers/PatilShreyas?label=Follow&style=social)](https://github.com/PatilShreyas)
-[![GitHub stars](https://img.shields.io/github/stars/PatilShreyas/mutekt?style=social)](https://github.com/PatilShreyas/mutekt/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/PatilShreyas/mutekt?style=social)](https://github.com/PatilShreyas/mutekt/network/members)
-[![GitHub watchers](https://img.shields.io/github/watchers/PatilShreyas/mutekt?style=social)](https://github.com/PatilShreyas/mutekt/watchers)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imShreyasPatil?label=Follow&style=social)](https://twitter.com/imShreyasPatil)
+
+
+(Pronunciation: _**/mjuːˈteɪt/**_, 'k' is silent).   
+Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP) which 
+generates compile-time safe code from annotation. _Made with ❤️ for Kotliners_.
+
+Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
 
 ## Adding _Mutekt_ to the project
 
