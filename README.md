@@ -14,11 +14,107 @@ generates compile-time safe code from annotation. _Made with ❤️ for Kotliner
 [![GitHub watchers](https://img.shields.io/github/watchers/PatilShreyas/mutekt?style=social)](https://github.com/PatilShreyas/mutekt/watchers)
 [![Twitter Follow](https://img.shields.io/twitter/follow/imShreyasPatil?label=Follow&style=social)](https://twitter.com/imShreyasPatil)
 
-## Motivation
+## Introduction
 
-// TODO
+Let's understand the reason for which Mutekt came to picture.
 
-## Usage
+Taking inspiration from Redux's way of state management having immutable state model in Kotlin ecosystem, implementation
+in Kotlin needs a lot of care and boilerplate to properly handle the state.
+
+### Without Mutekt
+
+Assume this is UI state model:
+
+```kotlin
+data class NotesState(val isLoading: Boolean, val notes: List<String>, val error: String?)
+```
+
+Here are well known popular opinionated approaches in the Kotlin community:
+
+#### 1. Copying State model
+
+In this approach, a mutable state flow is created with initial state. Whenever state needs to be mutated, previous
+state is used to calculate next state i.e. it just copies the previous state.
+
+```kotlin
+class NotesViewModel: ViewModel() {
+    private val _state = MutableStateFlow(NotesState(false, emptyList(), null))
+    val state = _state.asStateFlow()
+    
+    fun loadNotes() {
+        _state.update { it.copy(isLoading = true) }
+        
+        val notes = getNotes()
+        _state.update { it.copy(notes = notes, isLoading = false) }
+    }
+}
+```
+
+In this approach, following things needs to be taken care of:
+- The new state should be updated atomically and with synchronization otherwise state inconsistency will occur 
+(_i.e. `update{}` method of StateFlow_).
+- By dev mistake, while updating new state if previous state is not copied (by `it.copy()`) the previous state will 
+be lost.
+
+#### 2. Combining multiple states to form new one
+
+```kotlin
+class NotesViewModel: ViewModel() {
+    private val isLoading = MutableStateFlow(false)
+    private val notes = MutableStateFlow(emptyList<String>())
+    private val error = MutableStateFlow<String?>(null)
+    
+    val state: StateFlow<NotesState> = combine(isLoading, notes, error) { isLoading, notes, error ->
+        NotesState(isLoading, notes, error)
+    }.stateIn(viewModelScope, WhileSubscribed(), NotesState(false, emptyList(), null))
+    
+    fun loadNotes() {
+        isLoading.value = true
+        
+        notes.value = getNotes()
+        isLoading.value = false
+    }
+}
+```
+
+In this approach, there's no scope for mistakes but needs repeated boilerplate for each property of state model.
+As new state property is added in the codebase while development, refactoring is needed everytime to have proper state
+management.
+
+### With Mutekt
+
+_Mutekt solves the issues around the above-mentioned approaches and lets developer focus on the state manipulation 
+instead of declaring each and every state field every time by generates required and common boilerplate at compile time 
+by annotation processing._
+
+With Mutekt you just need to declare state model as interface and apply the annotation. Rest magic is done by the KSP.
+
+```kotlin
+@GenerateMutableModel
+interface NotesState {
+    val isLoading: Boolean
+    val notes: List<String>
+    val error: String?
+}
+
+class NotesViewModel: ViewModel() {
+    private val _state = MutableNotesState(isLoading = false, notes = emptyList(), error = null)
+    val state = _state.asStateFlow()
+    
+    fun loadNotes() {
+        _state.isLoading = true
+        val fetchedNotes = getNotes()
+        _state.apply {
+            isLoading = false
+            notes = fetchedNotes
+        }
+    }
+}
+```
+
+Refer to the next section to learn implementing the Mutekt in your project.
+
+## Implementation of Mutekt
 
 You can check [`/example`](/example) directory which includes example application for demonstration.
 
