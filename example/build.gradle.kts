@@ -11,6 +11,10 @@ dependencies {
     implementation(project(":mutekt-core"))
     ksp(project(":mutekt-codegen"))
 
+//     val mutektVersion = "1.0.0-alpha01"
+//     implementation("dev.shreyaspatil.mutekt:mutekt-core:$mutektVersion")
+//     ksp("dev.shreyaspatil.mutekt:mutekt-codegen:$mutektVersion")
+
     implementation(libs.kotlinx.coroutines.core)
 }
 
