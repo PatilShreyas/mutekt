@@ -16,11 +16,13 @@ Generates mutable models from immutable model definitions. _Made with ❤️ for
 
 // TODO
 
-## 🚀 Implementation
+## Usage
 
 You can check [/example](/example) directory which includes example application for demonstration.
 
 ### 1. Gradle setup
+
+#### 1.1 Add dependencies
 
 In `build.gradle` of app module, include this dependency
 
@@ -31,6 +33,11 @@ dependencies {
 ```
 
 _You can find latest version and changelogs in the [releases](https://github.com/PatilShreyas/mutekt/releases)_.
+
+#### 1.2 Include generated classes in sources
+
+// TODO: JVM Projects  
+// TODO: Android Projects
 
 ### 2. Apply annotation
 
