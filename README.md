@@ -286,6 +286,9 @@ class NotesViewModel: ViewModel() {
 }
 ```
 
+[***Refer to this Wiki***](https://github.com/PatilShreyas/mutekt/wiki/Code-generation-with-Mutekt) to know what code 
+is generated under the hood by Mutekt.
+
 ## 👨‍💻 Development
 
 Clone this repository and import in IntelliJ IDEA (_any edition_) or Android Studio.
