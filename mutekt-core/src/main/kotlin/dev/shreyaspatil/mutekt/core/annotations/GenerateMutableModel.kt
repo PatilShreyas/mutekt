@@ -15,6 +15,18 @@
  */
 package dev.shreyaspatil.mutekt.core.annotations
 
+/**
+ * Instructs Mutekt code generator to generate mutable model for the model on which this annotation is applied.
+ *
+ * Example:
+ * ```
+ *  @GenerateMutableModel
+ *  interface ExampleState {
+ *      val example1: Boolean
+ *      val example2: String
+ *  }
+ * ```
+ */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
 annotation class GenerateMutableModel

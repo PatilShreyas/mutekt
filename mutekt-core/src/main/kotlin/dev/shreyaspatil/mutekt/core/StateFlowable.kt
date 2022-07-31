@@ -17,6 +17,9 @@ package dev.shreyaspatil.mutekt.core
 
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Promises that the implementor provides [StateFlow] of type [T]
+ */
 interface StateFlowable<T> {
     fun asStateFlow(): StateFlow<T>
 }
