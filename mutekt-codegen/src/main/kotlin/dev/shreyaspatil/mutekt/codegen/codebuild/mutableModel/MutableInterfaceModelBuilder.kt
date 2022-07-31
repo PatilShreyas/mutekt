@@ -23,13 +23,13 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import dev.shreyaspatil.mutekt.codegen.codebuild.ClassNames
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToProperty
-import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getAllPublicProperties
+import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 
 class MutableInterfaceModelBuilder(
     private val immutableStateInterface: ClassName,
     private val publicProperties: Sequence<KSPropertyDeclaration>
 ) {
-    constructor(clazz: KSClassDeclaration) : this(clazz.toClassName(), clazz.getAllPublicProperties())
+    constructor(clazz: KSClassDeclaration) : this(clazz.toClassName(), clazz.getPublicAbstractProperties())
 
     private val interfaceName = "Mutable${immutableStateInterface.simpleName}"
 

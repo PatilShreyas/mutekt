@@ -20,7 +20,7 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
-import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getAllPublicProperties
+import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 import dev.shreyaspatil.mutekt.codegen.codebuild.immutableModel.ImmutableDataClassModelBuilder
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.MutableInterfaceModelBuilder
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl.MutableClassModelImplBuilder
@@ -38,13 +38,13 @@ class ModelClassFileBuilder(private val state: KSClassDeclaration) {
             immutableStateInterface = state.toClassName(),
             mutableModelInterfaceName = mutableInterfaceSpec.toClassName(),
             immutableDataClassName = immutableDataClassSpec.toClassName(),
-            publicProperties = state.getAllPublicProperties()
+            publicProperties = state.getPublicAbstractProperties()
         ).build()
 
         val mutableModelFactoryFunSpec = MutableModelFactoryFunctionBuilder(
             mutableInterfaceName = mutableInterfaceSpec.toClassName(),
             mutableImplClassName = mutableModelClassImplSpec.toClassName(),
-            publicProperties = state.getAllPublicProperties()
+            publicProperties = state.getPublicAbstractProperties()
         ).build()
 
         return FileSpec.builder(

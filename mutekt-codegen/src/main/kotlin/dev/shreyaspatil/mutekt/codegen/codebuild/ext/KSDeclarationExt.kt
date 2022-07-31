@@ -15,6 +15,7 @@
  */
 package dev.shreyaspatil.mutekt.codegen.codebuild.ext
 
+import com.google.devtools.ksp.isAbstract
 import com.google.devtools.ksp.isPublic
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
@@ -50,6 +51,6 @@ fun Sequence<KSPropertyDeclaration>.eachToParameter(
 ): Sequence<ParameterSpec> = map { ParameterSpec.builder(name(it), type(it)).apply { transform(this, it) }.build() }
 
 /**
- * Returns all public properties of this class declaration.
+ * Returns all public abstract properties of this class declaration.
  */
-fun KSClassDeclaration.getAllPublicProperties() = getAllProperties().filter { it.isPublic() }
+fun KSClassDeclaration.getPublicAbstractProperties() = getAllProperties().filter { it.isPublic() && it.isAbstract() }

@@ -24,7 +24,7 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToParameter
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToProperty
-import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getAllPublicProperties
+import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 
 /**
  * Generates private immutable data class for a state model.
@@ -33,7 +33,7 @@ class ImmutableDataClassModelBuilder(
     private val immutableStateInterface: ClassName,
     private val publicProperties: Sequence<KSPropertyDeclaration>
 ) {
-    constructor(clazz: KSClassDeclaration) : this(clazz.toClassName(), clazz.getAllPublicProperties())
+    constructor(clazz: KSClassDeclaration) : this(clazz.toClassName(), clazz.getPublicAbstractProperties())
 
     private val className = "Immutable${immutableStateInterface.simpleName}"
 

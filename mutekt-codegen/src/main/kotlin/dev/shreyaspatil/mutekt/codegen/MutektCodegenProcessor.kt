@@ -26,7 +26,7 @@ import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import dev.shreyaspatil.mutekt.codegen.codebuild.ModelClassFileBuilder
-import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getAllPublicProperties
+import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 import dev.shreyaspatil.mutekt.codegen.logging.ErrorMessages
 import dev.shreyaspatil.mutekt.core.annotations.GenerateMutableModel
 
@@ -67,7 +67,7 @@ class MutektCodegenProcessor(
 
         // Make sure there are public members in the definition of model. If there are zero public members, do not
         // generate model for such class.
-        val allPublicProperties = state.getAllPublicProperties().toList()
+        val allPublicProperties = state.getPublicAbstractProperties().toList()
         if (allPublicProperties.isEmpty()) {
             logger.warn(ErrorMessages.canNotGenerateModelDueToZeroFields(state.simpleName.asString()), state)
             return false
