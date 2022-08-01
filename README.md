@@ -9,7 +9,7 @@
 
 (Pronunciation: _**/mjuːˈteɪt/**_, 'k' is silent).   
 Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP) which 
-generates compile-time safe code. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
+generates compile-time safe code. This is inspired from the concept _Redux_ and _Immer_ from JS world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
 
 Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
 
