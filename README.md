@@ -260,6 +260,10 @@ _Mutekt solves the issues around the above-mentioned approaches and lets develop
 instead of declaring each and every state field every time by generates required and common boilerplate at compile time
 by annotation processing._
 
+Just by inspiring from very popular [Immer](https://immerjs.github.io/immer/typescript/) (from JS world), it
+simplifies writing immutable updates with the "mutating" syntax that helps writing clean reducer implementations.
+
+
 With Mutekt you just need to declare state model as interface and apply the annotation. Rest magic is done by the KSP.
 
 ```kotlin
