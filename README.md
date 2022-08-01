@@ -9,9 +9,11 @@
 
 (Pronunciation: _**/mjuːˈteɪt/**_, 'k' is silent).   
 Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP) which 
-generates compile-time safe code from annotation. _Made with ❤️ for Kotliners_.
+generates compile-time safe code. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
 
 Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
+
+_Made with ❤️ for Kotliners_. 
 
 ## Adding _Mutekt_ to the project
 
