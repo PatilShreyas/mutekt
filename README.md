@@ -1,15 +1,19 @@
-# Mutekt
+<h1 align="center">Mutekt</h1>
 
-[![Build](https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml/badge.svg)](https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml)
-[![Release](https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml/badge.svg)](https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml)
-[![Maven Central](https://img.shields.io/maven-central/v/dev.shreyaspatil.mutekt/mutekt-codegen?label=Maven%20Central&logo=android&style=flat-square)](https://search.maven.org/artifact/dev.shreyaspatil.mutekt)
-[![GitHub](https://img.shields.io/github/license/PatilShreyas/mutekt?label=License)](LICENSE)
-[![Twitter Follow](https://img.shields.io/twitter/follow/imShreyasPatil?label=Follow&style=social)](https://twitter.com/imShreyasPatil)
+<p align="center">
+    (Pronunciation: <b><i>/mjuːˈteɪt/</i></b>, 'k' is silent).<br>
+    "Simplify mutating "immutable" state models"
+</p>
 
+<p align="center">
+    <a href="https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml"><img src="https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml/badge.svg"/></a>
+    <a href="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml"><img src="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml/badge.svg"/></a>
+    <a href="https://search.maven.org/artifact/dev.shreyaspatil.mutekt"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.mutekt/mutekt-codegen?label=Maven%20Central&logo=android&style=flat-square"/></a>
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/PatilShreyas/mutekt?label=License)"/></a>
+</p>
 
-(Pronunciation: _**/mjuːˈteɪt/**_, 'k' is silent).   
-Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP) which 
-generates compile-time safe code. This is inspired from the concept _Redux_ and _Immer_ from JS world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
+Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP).
+This is inspired from the concept _Redux_ and _Immer_ from JS world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
 
 Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
 
@@ -121,7 +125,11 @@ android {
 ```
 </details>
 
-### 2. Apply annotation
+## Usage
+
+Mutekt is very easy to use. Just apply annotation to the model and see the magic!
+
+### 1. Apply annotation
 
 Declare a state model as an `interface` and apply `@GenerateMutableModel` annotation to it.
 
@@ -145,7 +153,7 @@ interface NotesState {
 
 Once done, **🔨Build project** and mutable model will be generated for the immutable definition by KSP.
 
-### 3. Use generated mutable model
+### 2. Simply mutate and get immutable state
 
 Once project is built and models are generated, the mutable model can be created with the factory function: `Mutable__()`.  
 _For example, if interface name is `ExampleState` then method name for creating mutable model will be 
@@ -202,7 +210,7 @@ Assume this is UI state model:
 data class NotesState(val isLoading: Boolean, val notes: List<String>, val error: String?)
 ```
 
-Here are well known popular opinionated approaches in the Kotlin community:
+Here are well known popular opinionated approaches in the Kotlin community to implement a reducer pattern:
 
 #### 1. Copying State model
 
@@ -263,31 +271,7 @@ by annotation processing._
 Just by inspiring from very popular [Immer](https://immerjs.github.io/immer/typescript/) (from JS world), it
 simplifies writing immutable updates with the "mutating" syntax that helps writing clean reducer implementations.
 
-
-With Mutekt you just need to declare state model as interface and apply the annotation. Rest magic is done by the KSP.
-
-```kotlin
-@GenerateMutableModel
-interface NotesState {
-    val isLoading: Boolean
-    val notes: List<String>
-    val error: String?
-}
-
-class NotesViewModel: ViewModel() {
-    private val _state = MutableNotesState(isLoading = false, notes = emptyList(), error = null)
-    val state = _state.asStateFlow()
-    
-    fun loadNotes() {
-        _state.isLoading = true
-        val fetchedNotes = getNotes()
-        _state.apply {
-            isLoading = false
-            notes = fetchedNotes
-        }
-    }
-}
-```
+With Mutekt you just need to declare state model as interface and apply the annotation. Rest magic is done by the KSP (_As you already saw example earlier_).
 
 [***Refer to this Wiki***](https://github.com/PatilShreyas/mutekt/wiki/Code-generation-with-Mutekt) to know what code 
 is generated under the hood by Mutekt.
