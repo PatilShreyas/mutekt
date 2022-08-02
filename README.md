@@ -20,8 +20,6 @@ using "mutating" syntax which helps simplify most reducer implementations.
 
 ![](mutekt-usage.gif)
 
-Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
-
 ## Usage
 
 Try out the [example app](/example) to see it in action.
@@ -192,86 +190,10 @@ android {
 ```
 </details>
 
-## Why Mutekt?
+## See also
 
-Let's understand the reason for which Mutekt came to picture.
-
-Taking inspiration from Redux's way of state management having immutable state model in Kotlin ecosystem, implementation
-in Kotlin needs a lot of care and boilerplate to properly handle the state.
-
-### Without Mutekt
-
-Assume this is UI state model:
-
-```kotlin
-data class NotesState(val isLoading: Boolean, val notes: List<String>, val error: String?)
-```
-
-Here are well known popular opinionated approaches in the Kotlin community to implement a reducer pattern:
-
-#### 1. Copying State model
-
-In this approach, a mutable state flow is created with initial state. Whenever state needs to be mutated, previous
-state is used to calculate next state i.e. it just copies the previous state.
-
-```kotlin
-class NotesViewModel: ViewModel() {
-    private val _state = MutableStateFlow(NotesState(false, emptyList(), null))
-    val state = _state.asStateFlow()
-    
-    fun loadNotes() {
-        _state.update { it.copy(isLoading = true) }
-        
-        val notes = getNotes()
-        _state.update { it.copy(notes = notes, isLoading = false) }
-    }
-}
-```
-
-In this approach, following things needs to be taken care of:
-- The new state should be updated atomically and with synchronization otherwise state inconsistency will occur
-  (_i.e. `update{}` method of StateFlow_).
-- By dev mistake, while updating new state if previous state is not copied (by `it.copy()`) the previous state will
-  be lost.
-
-#### 2. Combining multiple states to form new one
-
-```kotlin
-class NotesViewModel: ViewModel() {
-    private val isLoading = MutableStateFlow(false)
-    private val notes = MutableStateFlow(emptyList<String>())
-    private val error = MutableStateFlow<String?>(null)
-    
-    val state: StateFlow<NotesState> = combine(isLoading, notes, error) { isLoading, notes, error ->
-        NotesState(isLoading, notes, error)
-    }.stateIn(viewModelScope, WhileSubscribed(), NotesState(false, emptyList(), null))
-    
-    fun loadNotes() {
-        isLoading.value = true
-        
-        notes.value = getNotes()
-        isLoading.value = false
-    }
-}
-```
-
-In this approach, there's no scope for mistakes but needs repeated boilerplate for each property of state model.
-As new state property is added in the codebase while development, refactoring is needed everytime to have proper state
-management.
-
-### With Mutekt
-
-_Mutekt solves the issues around the above-mentioned approaches and lets developer focus on the state manipulation
-instead of declaring each and every state field every time by generates required and common boilerplate at compile time
-by annotation processing._
-
-Just by inspiring from very popular [Immer](https://immerjs.github.io/immer/typescript/) (from JS world), it
-simplifies writing immutable updates with the "mutating" syntax that helps writing clean reducer implementations.
-
-With Mutekt you just need to declare state model as interface and apply the annotation. Rest magic is done by the KSP (_As you already saw example earlier_).
-
-[***Refer to this Wiki***](https://github.com/PatilShreyas/mutekt/wiki/Code-generation-with-Mutekt) to know what code 
-is generated under the hood by Mutekt.
+- [Why Mutekt](https://github.com/PatilShreyas/mutekt/wiki/Why-Mutekt%3F)
+- [Generated code with Mutekt](https://github.com/PatilShreyas/mutekt/wiki/Code-generation-with-Mutekt)
 
 ## 👨‍💻 Development
 
