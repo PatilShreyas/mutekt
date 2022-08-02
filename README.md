@@ -1,9 +1,8 @@
 <h1 align="center">Mutekt</h1>
 
-<p align="center">
-    (Pronunciation: <b><i>/mjuːˈteɪt/</i></b>, 'k' is silent).<br>
-    "Simplify mutating "immutable" state models"
-</p>
+<p align="center">(Pronunciation: <b><i>/mjuːˈteɪt/</i></b>, 'k' is silent)</p>
+
+<h3 align="center"><i>"Simplify mutating "immutable" state models"</i></h3>
 
 <p align="center">
     <a href="https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml"><img src="https://github.com/PatilShreyas/mutekt/actions/workflows/build.yml/badge.svg"/></a>
@@ -13,15 +12,83 @@
 </p>
 
 Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP).
-This is inspired from the concept _Redux_ and _Immer_ from JS world that let you write simpler immutable update logic using "mutating" syntax which helps simplify most reducer implementations. **So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎   
+This is inspired from the concept _Redux_ and _Immer_ from JS world that let you write simpler immutable update logic 
+using "mutating" syntax which helps simplify most reducer implementations. 
+**So you just need to focus on actual development and _Mutekt_ will write boilerplate for you!** 😎
+
+<p align="center">Like this ⬇️️</p>
+
+![](mutekt-usage.gif)
 
 Navigate to the section _["Why Mutekt?"](#why-mutekt)_ to understand the need and advantages of using Mutekt.
 
-_Made with ❤️ for Kotliners_. 
+## Usage
 
-## Adding _Mutekt_ to the project
+Try out the [example app](/example) to see it in action.
 
-You can check [`/example`](/example) directory which includes example application for demonstration.
+### 1. Apply annotation and generate model
+
+Declare a state model as an `interface` and apply `@GenerateMutableModel` annotation to it.
+
+Example:
+
+```kotlin
+@GenerateMutableModel
+interface NotesState {
+    val isLoading: Boolean
+    val notes: List<String>
+    val error: String?
+}
+// You can also apply annotation `@Immutable` if using for Jetpack Compose UI model.
+```
+
+Once done, **🔨Build project** and mutable model will be generated for the immutable definition by KSP.
+
+### 2. Simply mutate and get immutable state
+
+The mutable model can be created with the factory function which is generated with the name of an interface with prefix
+`Mutable`.
+_For example, if interface name is `ExampleState` then method name for creating mutable model will be
+`MutableExampleState()` and will have parameters in it which are declared as public properties in the interface._
+
+```kotlin
+/**
+ * Instance of mutable model [MutableNotesState] which is generated with Mutekt.
+ */
+private val _state = MutableNotesState(isLoading = true, notes = emptyList(), error = null)
+
+fun setLoading() {
+    _state.isLoading = true
+}
+
+fun setNotes() {
+    _state.apply {
+        isLoading = false
+        notes = listOf("Lorem Ipsum")
+    }
+}
+```
+
+### 3. Getting reactive immutable value updates
+
+To get immutable instance with reactive state updates, use method `asStateFlow()` which returns instance of
+[`StateFlow<>`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/).
+Whenever any field of Mutable model is updated with new value, this StateFlow gets updated with new immutable state value.
+
+```kotlin
+val state: StateFlow<NotesState> = _state.asStateFlow()
+```
+
+#### Properties of immutable instance implemented by Mutekt:
+
+- [x] Immutable model implementation promises to be truly ***Immutable*** i.e. once instance is created, its properties
+will never change.
+- [x] Implementation is actually a ***data class*** under the hood i.e. having `equals()` and `hashCode()` 
+already overridden.
+
+---
+
+## Setting up _Mutekt_ in the project
 
 ### 1. Gradle setup
 
@@ -57,7 +124,7 @@ _You can find the latest version and changelogs in the [releases](https://github
 
 #### 1.3 Include generated classes in sources
 
-> **Warning**   
+> **Note**   
 > In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
 
 Include generated sources as follows:
@@ -124,76 +191,6 @@ android {
 }
 ```
 </details>
-
-## Usage
-
-Mutekt is very easy to use. Just apply annotation to the model and see the magic!
-
-### 1. Apply annotation
-
-Declare a state model as an `interface` and apply `@GenerateMutableModel` annotation to it.
-
-Example:
-
-```kotlin
-@GenerateMutableModel
-interface NotesState {
-    val isLoading: Boolean
-    val notes: List<String>
-    val error: String?
-}
-// You can also apply annotation `@Immutable` if using for Jetpack Compose UI model.
-```
-
-> **Note**
-> **Checklist for applying annotation**
->- [x] Interface must have ***public*** visibility.
->- [x] All members properties should have ***public*** visibility.
-
-
-Once done, **🔨Build project** and mutable model will be generated for the immutable definition by KSP.
-
-### 2. Simply mutate and get immutable state
-
-Once project is built and models are generated, the mutable model can be created with the factory function: `Mutable__()`.  
-_For example, if interface name is `ExampleState` then method name for creating mutable model will be 
-`MutableExampleState()` and will have parameters in it which are declared as public properties in the interface._
-
-To get immutable instance with reactive state updates, use method `asStateFlow()` which returns instance of [`StateFlow<>`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/).
-Whenever any field of Mutable model is updated with new value, this StateFlow gets updated with new immutable state value.
-
-***Refer to the following example for complete usage***
-
-```kotlin
-class NotesViewModel: ViewModel() {
-
-    /**
-     * Instance of mutable model [MutableNotesState] which is generated with Mutekt.
-     */
-    private val _state = MutableNotesState(isLoading = false, notes = emptyList(), error = null)
-
-    /**
-     * Immutable (read-only) StateFlow of a [NotesState].
-     */
-    val state: StateFlow<NotesState> = _state.asStateFlow()
-
-    fun loadNotes() {
-        _state.isLoading = true
-
-        try {
-            _state.notes = getNotes()
-        } catch (e: Throwable) {
-            _state.error = e.message ?: "Error occurred"
-        }
-        _state.isLoading = false
-    }
-}
-```
-
-In this example, only ViewModel is allowed to mutate the state i.e. manage the state for UI. `StateFlow<NotesState>` is 
-exposed to the UI layer which means UI won't be able to ***directly*** manipulate the state.
-
----
 
 ## Why Mutekt?
 
