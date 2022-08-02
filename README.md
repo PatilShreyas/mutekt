@@ -192,7 +192,7 @@ android {
 
 ## See also
 
-- [Why Mutekt](https://github.com/PatilShreyas/mutekt/wiki/Why-Mutekt%3F)
+- [Why Mutekt?](https://github.com/PatilShreyas/mutekt/wiki/Why-Mutekt%3F)
 - [Generated code with Mutekt](https://github.com/PatilShreyas/mutekt/wiki/Code-generation-with-Mutekt)
 
 ## 👨‍💻 Development
