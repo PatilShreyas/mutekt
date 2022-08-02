@@ -18,7 +18,7 @@ using "mutating" syntax which helps simplify most reducer implementations.
 
 <p align="center">Like this ⬇️️</p>
 
-![](mutekt-usage.gif)
+![Mutekt Usage Example](mutekt-usage.gif)
 
 ## Usage
 
