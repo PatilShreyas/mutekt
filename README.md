@@ -70,7 +70,7 @@ fun setNotes() {
 ### 3. Getting reactive immutable value updates
 
 To get immutable instance with reactive state updates, use method `asStateFlow()` which returns instance of
-[`StateFlow<>`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/).
+[`StateFlow<T>`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-state-flow/).
 Whenever any field of Mutable model is updated with new value, this StateFlow gets updated with new immutable state value.
 
 ```kotlin
