@@ -1,32 +1,44 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
     alias(libs.plugins.ksp)
+    application
 }
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    implementation(project(":mutekt-core"))
-    ksp(project(":mutekt-codegen"))
-
-//     val mutektVersion = "1.0.0-alpha02"
-//     implementation("dev.shreyaspatil.mutekt:mutekt-core:$mutektVersion")
-//     ksp("dev.shreyaspatil.mutekt:mutekt-codegen:$mutektVersion")
-
-    implementation(libs.kotlinx.coroutines.core)
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    google()
 }
 
 kotlin {
-    sourceSets.main {
-        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    jvm {
+        testRuns.getByName("test").executionTask.configure {
+            useJUnitPlatform()
+        }
+        withJava()
     }
-    sourceSets.test {
-        kotlin.srcDir("build/generated/ksp/test/kotlin")
+
+    @Suppress("UNUSED_VARIABLE")
+    sourceSets {
+        val commonMain by getting {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+            dependencies {
+                implementation(project(":mutekt-core"))
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
     }
+}
+
+application {
+    mainClass.set("dev.shreyaspatil.mutekt.example.MainKt")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":mutekt-codegen"))
 }

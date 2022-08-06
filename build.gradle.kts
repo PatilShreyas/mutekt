@@ -1,7 +1,9 @@
 plugins {
     kotlin("jvm") version libs.versions.kotlin.asProvider().get() apply false
+    kotlin("multiplatform") version libs.versions.kotlin.asProvider().get() apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
+    alias(libs.plugins.android.library) apply false
 }
 
 repositories {
@@ -17,6 +19,10 @@ subprojects {
             targetExclude("bin/**/*.kt")
             ktlint()
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        }
+        kotlinGradle {
+            target("**/*.gradle.kts")
+            ktlint()
         }
     }
 }

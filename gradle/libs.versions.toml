@@ -2,6 +2,7 @@
 kotlin = "1.7.10"
 kotlin-jvmTarget = "1.8"
 ksp = "1.7.10-1.0.6"
+agp = "7.2.2"
 kotlinPoet = "1.12.0"
 coroutine = "1.6.4"
 junitJupiter = "5.8.1"
@@ -19,5 +20,6 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }

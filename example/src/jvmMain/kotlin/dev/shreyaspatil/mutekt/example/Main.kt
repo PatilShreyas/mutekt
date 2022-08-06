@@ -13,20 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.shreyaspatil.mutekt.core.annotations
+package dev.shreyaspatil.mutekt.example
 
-/**
- * Instructs Mutekt code generator to generate mutable model for the model on which this annotation is applied.
- *
- * Example:
- * ```
- *  @GenerateMutableModel
- *  interface ExampleState {
- *      val example1: Boolean
- *      val example2: String
- *  }
- * ```
- */
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.SOURCE)
-annotation class GenerateMutableModel
+import kotlinx.coroutines.runBlocking
+
+fun main() = runBlocking { notesUi(NotesViewModel(this)) }
