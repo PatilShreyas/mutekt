@@ -102,6 +102,8 @@ plugins {
 
 #### 1.2 Add dependencies
 
+##### 1.2.1 Without Kotlin Multiplatform
+
 In `build.gradle` of app module, include this dependency
 
 ```groovy
@@ -112,9 +114,35 @@ repositories {
 dependencies {
     implementation("dev.shreyaspatil.mutekt:mutekt-core:$mutektVersion")
     ksp("dev.shreyaspatil.mutekt:mutekt-codegen:$mutektVersion")
-    
+
     // Include kotlin coroutine to support usage of StateFlow 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+}
+```
+
+##### 1.2.2 With Kotlin Multiplatform
+
+In `build.gradle.kts` of project module:
+
+```kotlin
+kotlin {
+  sourceSets {
+    val commonMain by getting {
+      dependencies {
+        implementation("dev.shreyaspatil.mutekt:mutekt-core:$mutektVersion")
+      }
+    }
+  }
+}
+
+dependencies {
+  add("kspCommonMainMetadata", "dev.shreyaspatil.mutekt:mutekt-codegen:$mutektVersion")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+  if (name != "kspCommonMainKotlinMetadata") {
+    dependsOn("kspCommonMainKotlinMetadata")
+  }
 }
 ```
 
@@ -126,6 +154,8 @@ _You can find the latest version and changelogs in the [releases](https://github
 > In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
 
 Include generated sources as follows:
+
+##### 1.3.1 Without Kotlin Multiplatform
 
 <details open>
   <summary><b>Gradle (Groovy)</b></summary>
@@ -189,6 +219,18 @@ android {
 }
 ```
 </details>
+
+##### 1.3.2 With Kotlin Multiplatform
+
+```kotlin
+kotlin {
+  sourceSets {
+    val commonMain by getting {
+      kotlin.srcDirs("build/generated/ksp/metadata/commonMain/kotlin")
+    }
+  }
+}
+```
 
 ## See also
 
