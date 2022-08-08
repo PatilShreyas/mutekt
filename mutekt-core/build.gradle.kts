@@ -1,18 +1,13 @@
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
     id(libs.plugins.mavenPublish.get().pluginId)
 }
 
 repositories {
     mavenCentral()
-    google()
 }
 
 kotlin {
-    android {
-        publishLibraryVariants("release", "debug")
-    }
     jvm {
         testRuns.getByName("test").executionTask.configure {
             useJUnitPlatform()
@@ -37,24 +32,6 @@ kotlin {
                 runtimeOnly(libs.junit.jupiter.engine)
             }
         }
-
-        val badSourceSets = listOf(
-            "androidAndroidTestRelease",
-            "androidTestFixtures",
-            "androidTestFixturesDebug",
-            "androidTestFixturesRelease"
-        )
-        removeIf { ss -> ss.name in badSourceSets }
-    }
-}
-
-android {
-    namespace = findProperty("GROUP").toString()
-    compileSdk = 33
-    @Suppress("UnstableApiUsage")
-    defaultConfig {
-        minSdk = 21
-        targetSdk = 33
     }
 }
 

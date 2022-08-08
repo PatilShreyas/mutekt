@@ -3,7 +3,6 @@ plugins {
     kotlin("multiplatform") version libs.versions.kotlin.asProvider().get() apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
-    alias(libs.plugins.android.library) apply false
 }
 
 repositories {

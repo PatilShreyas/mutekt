@@ -20,6 +20,5 @@ junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", vers
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
