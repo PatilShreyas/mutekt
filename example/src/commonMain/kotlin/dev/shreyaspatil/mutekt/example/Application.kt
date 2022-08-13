@@ -20,10 +20,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlin.random.Random
-
-fun main() = runBlocking { notesUi(NotesViewModel(this)) }
 
 /**
  * Imagine this function as a UI layer which uses [NotesViewModel] for handling state of a UI.
