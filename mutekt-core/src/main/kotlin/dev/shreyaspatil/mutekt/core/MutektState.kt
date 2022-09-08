@@ -30,7 +30,7 @@ interface MutektState<STATE> {
  * @property STATE Immutable State model type
  * @property MUTABLE_STATE Mutable State model type
  */
-interface MutektMutableState<STATE, MUTABLE_STATE: STATE> : MutektState<STATE> {
+interface MutektMutableState<STATE, MUTABLE_STATE : STATE> : MutektState<STATE> {
     /**
      * Updates the [MUTABLE_STATE].
      *
