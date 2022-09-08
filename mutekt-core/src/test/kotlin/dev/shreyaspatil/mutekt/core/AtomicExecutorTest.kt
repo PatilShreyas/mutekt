@@ -51,7 +51,7 @@ class AtomicExecutorTest {
             }
         }
 
-        // Then: Count should be equal to 4
+        // Then: Count should be equal to number of executions
         assertEquals(100000, counter)
     }
 
