@@ -10,6 +10,7 @@ repositories {
 dependencies {
     implementation(libs.kotlinx.coroutines.core)
 
+    testImplementation(libs.kotlinx.coroutines.testing)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
