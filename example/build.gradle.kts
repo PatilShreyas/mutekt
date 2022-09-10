@@ -11,7 +11,7 @@ dependencies {
     implementation(project(":mutekt-core"))
     ksp(project(":mutekt-codegen"))
 
-//     val mutektVersion = "1.0.0-alpha02"
+//     val mutektVersion = "1.0.0-alpha03"
 //     implementation("dev.shreyaspatil.mutekt:mutekt-core:$mutektVersion")
 //     ksp("dev.shreyaspatil.mutekt:mutekt-codegen:$mutektVersion")
 
