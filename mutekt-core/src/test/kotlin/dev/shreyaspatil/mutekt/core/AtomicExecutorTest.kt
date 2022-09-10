@@ -56,6 +56,15 @@ class AtomicExecutorTest {
     }
 
     @Test
+    fun test_execute_onError_stateShouldBeUpdated() = runBlocking {
+        // When: Error occurs while executing with AtomicExecutor
+        runCatching { executor.execute { error("") } }
+
+        // Then: The state of `executing` should be reset to false
+        assertFalse(executor.executing.value)
+    }
+
+    @Test
     fun test_executing() = runBlocking {
         // Given: A lock for holding execution in executor
         val mutex = Mutex(locked = true)
