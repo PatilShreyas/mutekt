@@ -34,6 +34,11 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToParameter
 
 /**
  * Generates a mutable model class implementation
+ *
+ * @property immutableStateInterface Immutable state interface class name
+ * @property publicProperties Public properties of a state model interface
+ * @property mutableModelInterfaceName Mutable state interface class name
+ * @property immutableDataClassName Immutable data class name
  */
 class MutableClassModelImplBuilder(
     private val immutableStateInterface: ClassName,

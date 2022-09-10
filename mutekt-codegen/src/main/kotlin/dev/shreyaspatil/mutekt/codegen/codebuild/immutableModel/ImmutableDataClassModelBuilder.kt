@@ -28,6 +28,9 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 
 /**
  * Generates private immutable data class for a state model.
+ *
+ * @property immutableStateInterface Immutable state interface class name
+ * @property publicProperties Public properties of interface
  */
 class ImmutableDataClassModelBuilder(
     private val immutableStateInterface: ClassName,

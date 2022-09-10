@@ -25,6 +25,12 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ClassNames
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToProperty
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 
+/**
+ * Builds and generates interface definition of a mutable model
+ *
+ * @property immutableStateInterface Immutable state interface class name
+ * @property publicProperties Public properties of interface
+ */
 class MutableInterfaceModelBuilder(
     private val immutableStateInterface: ClassName,
     private val publicProperties: Sequence<KSPropertyDeclaration>
