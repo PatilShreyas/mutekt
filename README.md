@@ -126,8 +126,7 @@ _You can find the latest version and changelogs in the [releases](https://github
 
 #### 1.3 Include generated classes in sources
 
-> **Note**   
-> In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
+In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
 
 Include generated sources as follows:
 
