@@ -61,12 +61,15 @@ fun setLoading() {
 }
 
 fun setNotes() {
-    _state.apply {
+    _state.update {
         isLoading = false
         notes = listOf("Lorem Ipsum")
     }
 }
 ```
+
+> **Note**  
+> Use method `update{}` on Mutable model instance to mutate multiple fields atomically. 
 
 ### 3. Getting reactive immutable value updates
 
