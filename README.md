@@ -9,6 +9,7 @@
     <a href="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml"><img src="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml/badge.svg"/></a>
     <a href="https://search.maven.org/search?q=g:dev.shreyaspatil.mutekt"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.mutekt/mutekt-codegen?label=Maven%20Central&logo=android&style=flat-square"/></a>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/PatilShreyas/mutekt?label=License)"/></a>
+    <a href="https://codecov.io/gh/PatilShreyas/mutekt"><img src="https://codecov.io/gh/PatilShreyas/mutekt/branch/main/graph/badge.svg?token=t5722h7jWn"/></a>
 </p>
 
 Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP).
