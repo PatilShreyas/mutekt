@@ -31,10 +31,12 @@ koverMerged {
         }
     }
     xmlReport {
+        onCheck.set(true)
         reportFile.set(layout.buildDirectory.file("coverageReport/coverage.xml"))
     }
 
     htmlReport {
+        onCheck.set(true)
         reportDir.set(layout.buildDirectory.dir("coverageReport/html"))
     }
 }
