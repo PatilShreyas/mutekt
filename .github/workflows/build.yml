@@ -21,3 +21,12 @@ jobs:
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build --stacktrace
+
+      - name: Upload Coverage report to CodeCov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/coverageReport/coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
+          verbose: true
