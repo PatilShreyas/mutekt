@@ -35,7 +35,7 @@ class MutableInterfaceModelBuilder(
 
     fun build() = TypeSpec.interfaceBuilder(interfaceName)
         .addSuperinterface(immutableStateInterface)
-        .addSuperinterface(ClassNames.stateFlowableOf(immutableStateInterface))
+        .addSuperinterface(ClassNames.mutektMutableState(immutableStateInterface, thisClass()))
         .addKdoc("Mutable state model for [%L]", immutableStateInterface.simpleName)
         .addMutableStateModelFields()
         .build()
@@ -43,4 +43,6 @@ class MutableInterfaceModelBuilder(
     private fun TypeSpec.Builder.addMutableStateModelFields() = apply {
         publicProperties.eachToProperty { mutable().addModifiers(KModifier.OVERRIDE) }.forEach { addProperty(it) }
     }
+
+    private fun thisClass() = ClassName(immutableStateInterface.packageName, interfaceName)
 }
