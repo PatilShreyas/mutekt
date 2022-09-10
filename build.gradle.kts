@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version libs.versions.kotlin.asProvider().get() apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
+    alias(libs.plugins.kotlin.kover)
 }
 
 repositories {
@@ -10,6 +11,7 @@ repositories {
 
 subprojects {
     apply(plugin = rootProject.libs.plugins.spotless.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.kotlin.kover.get().pluginId)
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
             target("**/*.kt")
@@ -18,5 +20,21 @@ subprojects {
             ktlint()
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
         }
+    }
+}
+
+koverMerged {
+    enable()
+    filters {
+        projects {
+            excludes += listOf("example")
+        }
+    }
+    xmlReport {
+        reportFile.set(layout.buildDirectory.file("coverageReport/coverage.xml"))
+    }
+
+    htmlReport {
+        reportDir.set(layout.buildDirectory.dir("coverageReport/html"))
     }
 }
