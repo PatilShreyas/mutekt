@@ -18,15 +18,17 @@ package dev.shreyaspatil.mutekt.codegen.codebuild
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.ksp.toTypeName
-import dev.shreyaspatil.mutekt.core.StateFlowable
+import dev.shreyaspatil.mutekt.core.AtomicExecutor
+import dev.shreyaspatil.mutekt.core.MutektMutableState
 
 object ClassNames {
 
-    fun stateFlowableOf(clazz: ClassName) = ClassName(
-        StateFlowable::class.java.packageName,
-        StateFlowable::class.simpleName!!
-    ).parameterizedBy(clazz)
+    fun mutektMutableState(
+        immutableInterface: ClassName,
+        mutableInterface: ClassName
+    ) = MutektMutableState::class.asClassName().parameterizedBy(immutableInterface, mutableInterface)
 
     fun stateFlowOf(clazz: ClassName) = ClassName(
         "kotlinx.coroutines.flow",
@@ -47,4 +49,6 @@ object ClassNames {
         "kotlinx.coroutines.flow",
         "FlowCollector"
     ).parameterizedBy(clazz)
+
+    fun atomicExecutor() = AtomicExecutor::class.asClassName()
 }

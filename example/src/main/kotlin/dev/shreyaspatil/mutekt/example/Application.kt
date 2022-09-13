@@ -68,18 +68,23 @@ class NotesViewModel(private val viewModelScope: CoroutineScope) {
 
             try {
                 val allNotes = getNotes()
-                _state.apply {
+                setState {
                     isLoading = false
                     notes = allNotes
                 }
             } catch (e: Throwable) {
-                _state.apply {
+                setState {
                     isLoading = false
                     error = e.message ?: "Error occurred"
                 }
             }
         }
     }
+
+    /**
+     * Mutates state atomically
+     */
+    private fun setState(mutate: MutableNotesState.() -> Unit) = _state.update(mutate)
 
     /**
      * Randomly either returns notes or fails with Exception.

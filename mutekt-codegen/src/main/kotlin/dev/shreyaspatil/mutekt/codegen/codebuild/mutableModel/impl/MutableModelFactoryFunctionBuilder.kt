@@ -23,7 +23,11 @@ import com.squareup.kotlinpoet.KModifier
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToParameter
 
 /**
- * Generates a top level function for creating instance of mutable model interface
+ * Generates a top level function for creating instance of mutable model interface.
+ *
+ * @property mutableInterfaceName Mutable state interface class name
+ * @property mutableImplClassName Mutable state interface's implementor class name
+ * @property publicProperties Public properties of a state model interface
  */
 class MutableModelFactoryFunctionBuilder(
     private val mutableInterfaceName: ClassName,

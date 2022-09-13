@@ -18,8 +18,23 @@ package dev.shreyaspatil.mutekt.core
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Promises that the implementor provides [StateFlow] of type [T]
+ * Represents the state model of type [STATE].
  */
-interface StateFlowable<T> {
-    fun asStateFlow(): StateFlow<T>
+interface MutektState<STATE> {
+    fun asStateFlow(): StateFlow<STATE>
+}
+
+/**
+ * Represents mutable state.
+ *
+ * @property STATE Immutable State model type
+ * @property MUTABLE_STATE Mutable State model type
+ */
+interface MutektMutableState<STATE, MUTABLE_STATE : STATE> : MutektState<STATE> {
+    /**
+     * Updates the [MUTABLE_STATE].
+     *
+     * @param mutate A lambda block which allows to perform mutation on [MUTABLE_STATE].
+     */
+    fun update(mutate: MUTABLE_STATE.() -> Unit)
 }

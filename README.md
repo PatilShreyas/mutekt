@@ -9,6 +9,7 @@
     <a href="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml"><img src="https://github.com/PatilShreyas/mutekt/actions/workflows/release.yml/badge.svg"/></a>
     <a href="https://search.maven.org/search?q=g:dev.shreyaspatil.mutekt"><img src="https://img.shields.io/maven-central/v/dev.shreyaspatil.mutekt/mutekt-codegen?label=Maven%20Central&logo=android&style=flat-square"/></a>
     <a href="LICENSE"><img src="https://img.shields.io/github/license/PatilShreyas/mutekt?label=License)"/></a>
+    <a href="https://codecov.io/gh/PatilShreyas/mutekt"><img src="https://codecov.io/gh/PatilShreyas/mutekt/branch/main/graph/badge.svg?token=t5722h7jWn"/></a>
 </p>
 
 Generates mutable models from immutable model definitions. It's based on Kotlin's Symbol Processor (KSP).
@@ -60,12 +61,15 @@ fun setLoading() {
 }
 
 fun setNotes() {
-    _state.apply {
+    _state.update {
         isLoading = false
         notes = listOf("Lorem Ipsum")
     }
 }
 ```
+
+> **Note**  
+> Use method `update{}` on Mutable model instance to mutate multiple fields atomically. 
 
 ### 3. Getting reactive immutable value updates
 
@@ -122,8 +126,7 @@ _You can find the latest version and changelogs in the [releases](https://github
 
 #### 1.3 Include generated classes in sources
 
-> **Note**   
-> In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
+In order to make IDE aware of generated code, it's important to include KSP generated sources in the project source sets.
 
 Include generated sources as follows:
 

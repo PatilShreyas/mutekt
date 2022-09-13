@@ -19,9 +19,12 @@ import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.LambdaTypeName
 import com.squareup.kotlinpoet.NOTHING
+import com.squareup.kotlinpoet.ParameterSpec
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asClassName
 import com.squareup.kotlinpoet.buildCodeBlock
 import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.withIndent
@@ -31,6 +34,11 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToParameter
 
 /**
  * Generates a mutable model class implementation
+ *
+ * @property immutableStateInterface Immutable state interface class name
+ * @property publicProperties Public properties of a state model interface
+ * @property mutableModelInterfaceName Mutable state interface class name
+ * @property immutableDataClassName Immutable data class name
  */
 class MutableClassModelImplBuilder(
     private val immutableStateInterface: ClassName,
@@ -44,9 +52,11 @@ class MutableClassModelImplBuilder(
         .addModifiers(KModifier.PRIVATE)
         .addSuperinterface(mutableModelInterfaceName)
         .primaryConstructor()
+        .privateAtomicExecutor()
         .addPrivateStateFlowAndGetterSetterFields()
         .immutableStateFlowImpl()
         .overrideFunAsStateFlow()
+        .overrideFunUpdate()
         .build()
 
     private fun TypeSpec.Builder.primaryConstructor() = apply {
@@ -54,6 +64,15 @@ class MutableClassModelImplBuilder(
             FunSpec
                 .constructorBuilder()
                 .addParameters(publicProperties.eachToParameter().toList())
+                .build()
+        )
+    }
+
+    private fun TypeSpec.Builder.privateAtomicExecutor() = apply {
+        addProperty(
+            PropertySpec.builder("_atomicExecutor", ClassNames.atomicExecutor())
+                .initializer("%T()", ClassNames.atomicExecutor())
+                .addModifiers(KModifier.PRIVATE)
                 .build()
         )
     }
@@ -117,6 +136,24 @@ class MutableClassModelImplBuilder(
                 .addModifiers(KModifier.OVERRIDE)
                 .returns(ClassNames.stateFlowOf(immutableStateInterface))
                 .addStatement("return _immutableStateFlowImpl")
+                .build()
+        )
+    }
+
+    private fun TypeSpec.Builder.overrideFunUpdate() = apply {
+        addFunction(
+            FunSpec.builder("update")
+                .addModifiers(KModifier.OVERRIDE)
+                .addParameter(
+                    ParameterSpec.builder(
+                        name = "mutate",
+                        type = LambdaTypeName.get(
+                            receiver = mutableModelInterfaceName,
+                            returnType = Unit::class.asClassName()
+                        )
+                    ).build()
+                )
+                .addStatement("_atomicExecutor.execute { mutate() }")
                 .build()
         )
     }
@@ -191,27 +228,24 @@ class StateFlowImplBuilder(
                         beginControlFlow("%M", MemberNames.COROUTINE_SCOPE)
                         withIndent {
                             beginControlFlow(
-                                "%M(%L) { params ->",
+                                "%M(_atomicExecutor.executing, %L) { params ->",
                                 MemberNames.COMBINE,
                                 publicProperties.joinToString { "_${it.simpleName.asString()}" }
                             )
 
                             withIndent {
-                                addStatement("Immutable%L(", type.simpleName)
+                                addStatement("val isUpdating = params[0] as Boolean")
 
-                                withIndent {
-                                    publicProperties.forEachIndexed { index, field ->
-                                        addStatement(
-                                            "%L = params[%L] as %L,",
-                                            field.simpleName.asString(),
-                                            index,
-                                            field.type.toTypeName()
-                                        )
-                                    }
-                                }
-                                addStatement(")")
+                                beginControlFlow("if (!isUpdating)")
+                                addStatement("value")
+                                endControlFlow()
+
+                                beginControlFlow("else")
+                                addStatement("null")
+                                endControlFlow()
                             }
                             endControlFlow()
+                            addStatement(".%M()", MemberNames.FILTER_NOT_NULL)
                             addStatement(".%M(this)", MemberNames.STATE_IN)
                             addStatement(".collect(collector)")
                         }
