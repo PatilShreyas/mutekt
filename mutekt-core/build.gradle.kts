@@ -8,11 +8,7 @@ repositories {
 }
 
 kotlin {
-    jvm {
-        testRuns.getByName("test").executionTask.configure {
-            useJUnitPlatform()
-        }
-    }
+    jvm()
     js(BOTH) {
         browser()
         nodejs()
@@ -26,11 +22,10 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.core)
             }
         }
-        val jvmTest by getting {
+        val commonTest by getting {
             dependencies {
+                implementation(kotlin("test"))
                 implementation(libs.kotlinx.coroutines.testing)
-                implementation(libs.junit.jupiter.api)
-                runtimeOnly(libs.junit.jupiter.engine)
             }
         }
     }
