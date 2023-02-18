@@ -28,6 +28,7 @@ kotlin {
         }
         val jvmTest by getting {
             dependencies {
+                implementation(libs.kotlinx.coroutines.testing)
                 implementation(libs.junit.jupiter.api)
                 runtimeOnly(libs.junit.jupiter.engine)
             }

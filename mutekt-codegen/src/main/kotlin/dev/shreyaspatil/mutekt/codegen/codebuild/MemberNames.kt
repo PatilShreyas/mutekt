@@ -21,4 +21,5 @@ object MemberNames {
     val COROUTINE_SCOPE = MemberName("kotlinx.coroutines", "coroutineScope")
     val COMBINE = MemberName("kotlinx.coroutines.flow", "combine")
     val STATE_IN = MemberName("kotlinx.coroutines.flow", "stateIn")
+    val FILTER_NOT_NULL = MemberName("kotlinx.coroutines.flow", "filterNotNull")
 }

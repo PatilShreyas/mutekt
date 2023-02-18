@@ -3,6 +3,7 @@ plugins {
     kotlin("multiplatform") version libs.versions.kotlin.asProvider().get() apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.mavenPublish) apply false
+    alias(libs.plugins.kotlin.kover)
 }
 
 repositories {
@@ -11,6 +12,7 @@ repositories {
 
 subprojects {
     apply(plugin = rootProject.libs.plugins.spotless.get().pluginId)
+    apply(plugin = rootProject.libs.plugins.kotlin.kover.get().pluginId)
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
             target("**/*.kt")
@@ -23,5 +25,23 @@ subprojects {
             target("**/*.gradle.kts")
             ktlint()
         }
+    }
+}
+
+koverMerged {
+    enable()
+    filters {
+        projects {
+            excludes += listOf("example")
+        }
+    }
+    xmlReport {
+        onCheck.set(true)
+        reportFile.set(layout.buildDirectory.file("coverageReport/coverage.xml"))
+    }
+
+    htmlReport {
+        onCheck.set(true)
+        reportDir.set(layout.buildDirectory.dir("coverageReport/html"))
     }
 }

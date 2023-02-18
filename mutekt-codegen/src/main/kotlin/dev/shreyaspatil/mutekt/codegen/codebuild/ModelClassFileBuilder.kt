@@ -26,6 +26,9 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.MutableInterfaceMo
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl.MutableClassModelImplBuilder
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl.MutableModelFactoryFunctionBuilder
 
+/**
+ * Builds a class containing required interfaces and implementations for Mutekt.
+ */
 class ModelClassFileBuilder(private val state: KSClassDeclaration) {
     private val packageName = state.packageName.asString()
     private val generatedClassFilename = "${state.simpleName.asString()}_Generated"

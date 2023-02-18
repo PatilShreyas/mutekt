@@ -14,7 +14,9 @@ dependencies {
     implementation(libs.kotlinPoet.ksp)
 
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.kotlin.compile.testing)
 }
 
 tasks.test {
