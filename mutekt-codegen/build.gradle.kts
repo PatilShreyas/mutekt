@@ -1,26 +1,40 @@
 plugins {
-    kotlin("jvm")
-    id(libs.plugins.mavenPublish.get().pluginId)
+    kotlin("multiplatform")
 }
 
 repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(project(":mutekt-core"))
+kotlin {
+    jvm {
+        testRuns.getByName("test").executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
 
-    implementation(libs.ksp.symbol.processing.api)
-    implementation(libs.kotlinPoet.ksp)
+    @Suppress("UNUSED_VARIABLE")
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":mutekt-core"))
 
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlin.compile.testing)
-}
+                implementation(libs.ksp.symbol.processing.api)
+                implementation(libs.kotlinPoet.ksp)
+            }
 
-tasks.test {
-    useJUnitPlatform()
+            kotlin.srcDir("src/main/kotlin")
+            resources.srcDir("src/main/resources")
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.junit.jupiter.api)
+                implementation(libs.junit.jupiter.params)
+                implementation(libs.junit.jupiter.engine)
+                implementation(libs.kotlin.compile.testing)
+            }
+        }
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
