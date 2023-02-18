@@ -147,15 +147,16 @@ class MutektCodegenProcessorTest {
         assert(result.messages.contains("Mutekt will not generate mutable model for NotesState: because there are no public members declared."))
     }
 
-    private fun prepareCompilation(vararg sourceFiles: SourceFile): KotlinCompilation = KotlinCompilation().apply {
+    private fun prepareCompilation(sourceFiles: List<SourceFile>): KotlinCompilation = KotlinCompilation().apply {
         workingDir = temporaryFolder.toFile()
         inheritClassPath = true
         symbolProcessorProviders = listOf(MutektCodegenProcessorProvider())
-        sources = sourceFiles.asList()
+        sources = sourceFiles
         verbose = false
         kspWithCompilation = true
+        messageOutputStream = System.out
     }
 
     private fun compile(vararg sourceFiles: SourceFile): KotlinCompilation.Result =
-        prepareCompilation(*sourceFiles).compile()
+        prepareCompilation(sourceFiles.toList()).compile()
 }
