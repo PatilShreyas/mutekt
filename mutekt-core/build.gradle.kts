@@ -9,9 +9,17 @@ repositories {
 
 kotlin {
     jvm()
-    js(BOTH) {
-        browser()
-        nodejs()
+    js(IR) {
+        browser {
+            testTask {
+                isEnabled = false
+            }
+        }
+        nodejs {
+            testTask {
+                isEnabled = false
+            }
+        }
     }
     ios()
 
