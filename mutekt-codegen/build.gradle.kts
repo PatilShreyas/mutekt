@@ -22,9 +22,6 @@ kotlin {
                 implementation(libs.ksp.symbol.processing.api)
                 implementation(libs.kotlinPoet.ksp)
             }
-
-            kotlin.srcDir("src/main/kotlin")
-            resources.srcDir("src/main/resources")
         }
         val jvmTest by getting {
             dependencies {
