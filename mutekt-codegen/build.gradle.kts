@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
     id(libs.plugins.mavenPublish.get().pluginId)
 }
 
@@ -7,20 +7,34 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(project(":mutekt-core"))
+kotlin {
+    jvm {
+        testRuns.getByName("test").executionTask.configure {
+            // Temporarily disabled because 'https://github.com/tschuchortdev/kotlin-compile-testing'
+            // is not yet supporting latest KSP and Kotlin version
+//            useJUnitPlatform()
+        }
+    }
 
-    implementation(libs.ksp.symbol.processing.api)
-    implementation(libs.kotlinPoet.ksp)
+    @Suppress("UNUSED_VARIABLE")
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":mutekt-core"))
 
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlin.compile.testing)
-}
-
-tasks.test {
-    useJUnitPlatform()
+                implementation(libs.ksp.symbol.processing.api)
+                implementation(libs.kotlinPoet.ksp)
+            }
+        }
+        val jvmTest by getting {
+            dependencies {
+                implementation(libs.junit.jupiter.api)
+                implementation(libs.junit.jupiter.params)
+                implementation(libs.junit.jupiter.engine)
+                implementation(libs.kotlin.compile.testing)
+            }
+        }
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

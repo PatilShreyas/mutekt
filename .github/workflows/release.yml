@@ -31,13 +31,21 @@ jobs:
 
       - name: Publish Library
         run: |
-          echo "Publishing library🚀"
-          ./gradlew publish --no-daemon --no-parallel
-          echo "Published✅"
+          echo "Publishing :core library🚀"
+          ./gradlew :mutekt-core:publish
+          echo "Published Core✅"
 
-          echo "Releasing repository...🚀"
-          ./gradlew closeAndReleaseRepository
-          echo "Released✅"
+          echo "Releasing :code repository...🚀"
+          ./gradlew :mutekt-core:closeAndReleaseRepository
+          echo "Released Core✅"
+          
+          echo "Publishing :codegen library🚀"
+          ./gradlew :mutekt-codegen:publish
+          echo "Published Core✅"
+
+          echo "Releasing :codegen repository...🚀"
+          ./gradlew :mutekt-codegen:closeAndReleaseRepository
+          echo "Released Core✅"
         env:
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.inputs.versionName }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_KEY }}

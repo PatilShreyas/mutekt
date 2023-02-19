@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    kotlin("multiplatform")
     id(libs.plugins.mavenPublish.get().pluginId)
 }
 
@@ -7,16 +7,39 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    implementation(libs.kotlinx.coroutines.core)
+kotlin {
+    jvm {
+        withJava()
+    }
+    js(IR) {
+        browser {
+            testTask {
+                isEnabled = false
+            }
+        }
+        nodejs {
+            testTask {
+                isEnabled = false
+            }
+        }
+    }
+    ios()
+    mingwX64()
 
-    testImplementation(libs.kotlinx.coroutines.testing)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-}
-
-tasks.test {
-    useJUnitPlatform()
+    @Suppress("UNUSED_VARIABLE")
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.kotlinx.coroutines.core)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(libs.kotlinx.coroutines.testing)
+            }
+        }
+    }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
