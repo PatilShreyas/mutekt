@@ -8,7 +8,9 @@ repositories {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        withJava()
+    }
     js(IR) {
         browser {
             testTask {
@@ -22,6 +24,7 @@ kotlin {
         }
     }
     ios()
+    mingwX64()
 
     @Suppress("UNUSED_VARIABLE")
     sourceSets {
