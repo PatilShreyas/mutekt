@@ -12,7 +12,7 @@ kotlin {
         testRuns.getByName("test").executionTask.configure {
             // Temporarily disabled because 'https://github.com/tschuchortdev/kotlin-compile-testing'
             // is not yet supporting latest KSP and Kotlin version
-//            useJUnitPlatform()
+            useJUnitPlatform()
         }
     }
 
