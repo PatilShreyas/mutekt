@@ -27,27 +27,27 @@ object ClassNames {
 
     fun mutektMutableState(
         immutableInterface: ClassName,
-        mutableInterface: ClassName
+        mutableInterface: ClassName,
     ) = MutektMutableState::class.asClassName().parameterizedBy(immutableInterface, mutableInterface)
 
     fun stateFlowOf(clazz: ClassName) = ClassName(
         "kotlinx.coroutines.flow",
-        "StateFlow"
+        "StateFlow",
     ).parameterizedBy(clazz)
 
     fun mutableStateFlowOf(property: KSPropertyDeclaration) = ClassName(
         "kotlinx.coroutines.flow",
-        "MutableStateFlow"
+        "MutableStateFlow",
     ).parameterizedBy(property.type.toTypeName())
 
     fun listOf(clazz: ClassName) = ClassName(
         "kotlin.collections",
-        "List"
+        "List",
     ).parameterizedBy(clazz)
 
     fun flowCollectorOf(clazz: ClassName) = ClassName(
         "kotlinx.coroutines.flow",
-        "FlowCollector"
+        "FlowCollector",
     ).parameterizedBy(clazz)
 
     fun atomicExecutor() = AtomicExecutor::class.asClassName()

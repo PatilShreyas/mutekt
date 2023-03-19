@@ -43,19 +43,19 @@ class ModelClassFileBuilder(private val state: KSClassDeclaration) {
             immutableStateInterface = state.toClassName(),
             mutableModelInterfaceName = mutableInterfaceSpec.toClassName(),
             immutableDataClassName = immutableDataClassSpec.toClassName(),
-            publicProperties = state.getPublicAbstractProperties()
+            publicProperties = state.getPublicAbstractProperties(),
         ).build()
 
         val mutableModelFactoryFunSpec = MutableModelFactoryFunctionBuilder(
             mutableInterfaceName = mutableInterfaceSpec.toClassName(),
             mutableImplClassName = mutableModelClassImplSpec.toClassName(),
-            publicProperties = state.getPublicAbstractProperties()
+            publicProperties = state.getPublicAbstractProperties(),
         ).build()
 
         val immutableModelFactoryFunSpec = ImmutableModelFactoryFunctionBuilder(
             immutableModelInterfaceName = state.toClassName(),
             immutableModelImplClassName = immutableDataClassSpec.toClassName(),
-            publicProperties = state.getPublicAbstractProperties()
+            publicProperties = state.getPublicAbstractProperties(),
         ).build()
 
         val extensionFunSpec = ImmutableToMutableModelExtFunctionBuilder(
@@ -67,7 +67,7 @@ class ModelClassFileBuilder(private val state: KSClassDeclaration) {
 
         return FileSpec.builder(
             packageName = state.packageName.asString(),
-            fileName = generatedClassFilename
+            fileName = generatedClassFilename,
         ).addFileComment("This is auto-generated file by Mutekt(https://github.com/PatilShreyas/mutekt)")
             .addType(mutableInterfaceSpec)
             .addType(immutableDataClassSpec)

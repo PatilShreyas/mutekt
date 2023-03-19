@@ -32,7 +32,7 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ext.eachToParameter
 class MutableModelFactoryFunctionBuilder(
     private val mutableInterfaceName: ClassName,
     private val mutableImplClassName: ClassName,
-    private val publicProperties: Sequence<KSPropertyDeclaration>
+    private val publicProperties: Sequence<KSPropertyDeclaration>,
 ) {
     // Function name should be same as interface name
     private val functionName = mutableInterfaceName.simpleName
@@ -46,7 +46,7 @@ class MutableModelFactoryFunctionBuilder(
                         publicProperties
                             .mapNotNull { prop -> prop.docString?.let { doc -> prop.simpleName.asString() to doc } }
                             .forEach { (param, doc) -> addStatement("@param %L %L", param, doc) }
-                    }.build()
+                    }.build(),
             )
         }
         .addModifiers(KModifier.PUBLIC)
@@ -55,6 +55,6 @@ class MutableModelFactoryFunctionBuilder(
         .addStatement(
             "return %L(%L)",
             mutableImplClassName.simpleName,
-            publicProperties.joinToString { it.simpleName.asString() }
+            publicProperties.joinToString { it.simpleName.asString() },
         ).build()
 }
