@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl
+package dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel
 
 import com.google.devtools.ksp.symbol.KSPropertyDeclaration
 import com.squareup.kotlinpoet.ClassName
