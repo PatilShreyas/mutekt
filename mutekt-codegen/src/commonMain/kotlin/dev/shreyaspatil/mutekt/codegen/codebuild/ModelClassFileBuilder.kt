@@ -22,9 +22,11 @@ import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.ksp.toClassName
 import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
 import dev.shreyaspatil.mutekt.codegen.codebuild.immutableModel.ImmutableDataClassModelBuilder
+import dev.shreyaspatil.mutekt.codegen.codebuild.immutableModel.ImmutableModelFactoryFunctionBuilder
+import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.ImmutableToMutableModelExtFunctionBuilder
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.MutableInterfaceModelBuilder
+import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.MutableModelFactoryFunctionBuilder
 import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl.MutableClassModelImplBuilder
-import dev.shreyaspatil.mutekt.codegen.codebuild.mutableModel.impl.MutableModelFactoryFunctionBuilder
 
 /**
  * Builds a class containing required interfaces and implementations for Mutekt.
@@ -50,6 +52,19 @@ class ModelClassFileBuilder(private val state: KSClassDeclaration) {
             publicProperties = state.getPublicAbstractProperties()
         ).build()
 
+        val immutableModelFactoryFunSpec = ImmutableModelFactoryFunctionBuilder(
+            immutableModelInterfaceName = state.toClassName(),
+            immutableModelImplClassName = immutableDataClassSpec.toClassName(),
+            publicProperties = state.getPublicAbstractProperties()
+        ).build()
+
+        val extensionFunSpec = ImmutableToMutableModelExtFunctionBuilder(
+            immutableModelInterfaceName = state.toClassName(),
+            mutableModelInterfaceName = mutableInterfaceSpec.toClassName(),
+            mutableModelFunctionName = mutableModelFactoryFunSpec.name,
+            publicProperties = state.getPublicAbstractProperties(),
+        ).build()
+
         return FileSpec.builder(
             packageName = state.packageName.asString(),
             fileName = generatedClassFilename
@@ -58,6 +73,8 @@ class ModelClassFileBuilder(private val state: KSClassDeclaration) {
             .addType(immutableDataClassSpec)
             .addType(mutableModelClassImplSpec)
             .addFunction(mutableModelFactoryFunSpec)
+            .addFunction(immutableModelFactoryFunSpec)
+            .addFunction(extensionFunSpec)
             .build()
     }
 
