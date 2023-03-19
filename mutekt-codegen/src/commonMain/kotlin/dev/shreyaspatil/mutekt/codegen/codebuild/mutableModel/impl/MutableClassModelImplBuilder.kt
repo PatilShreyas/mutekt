@@ -44,7 +44,7 @@ class MutableClassModelImplBuilder(
     private val immutableStateInterface: ClassName,
     private val publicProperties: Sequence<KSPropertyDeclaration>,
     private val mutableModelInterfaceName: ClassName,
-    private val immutableDataClassName: ClassName
+    private val immutableDataClassName: ClassName,
 ) {
     private val className = "Mutable${immutableStateInterface.simpleName}Impl"
 
@@ -64,7 +64,7 @@ class MutableClassModelImplBuilder(
             FunSpec
                 .constructorBuilder()
                 .addParameters(publicProperties.eachToParameter().toList())
-                .build()
+                .build(),
         )
     }
 
@@ -73,7 +73,7 @@ class MutableClassModelImplBuilder(
             PropertySpec.builder("_atomicExecutor", ClassNames.atomicExecutor())
                 .initializer("%T()", ClassNames.atomicExecutor())
                 .addModifiers(KModifier.PRIVATE)
-                .build()
+                .build(),
         )
     }
 
@@ -111,7 +111,7 @@ class MutableClassModelImplBuilder(
                 FunSpec.setterBuilder()
                     .addParameter("value", type)
                     .addStatement("%L.value = %L", stateFlowDelegateProperty, "value")
-                    .build()
+                    .build(),
             ).build()
     }
 
@@ -124,9 +124,9 @@ class MutableClassModelImplBuilder(
                     StateFlowImplBuilder(
                         immutableStateInterface,
                         publicProperties,
-                        immutableDataClassName
-                    ).build()
-                ).build()
+                        immutableDataClassName,
+                    ).build(),
+                ).build(),
         )
     }
 
@@ -136,7 +136,7 @@ class MutableClassModelImplBuilder(
                 .addModifiers(KModifier.OVERRIDE)
                 .returns(ClassNames.stateFlowOf(immutableStateInterface))
                 .addStatement("return _immutableStateFlowImpl")
-                .build()
+                .build(),
         )
     }
 
@@ -149,12 +149,12 @@ class MutableClassModelImplBuilder(
                         name = "mutate",
                         type = LambdaTypeName.get(
                             receiver = mutableModelInterfaceName,
-                            returnType = Unit::class.asClassName()
-                        )
-                    ).build()
+                            returnType = Unit::class.asClassName(),
+                        ),
+                    ).build(),
                 )
                 .addStatement("_atomicExecutor.execute { mutate() }")
-                .build()
+                .build(),
         )
     }
 }
@@ -165,7 +165,7 @@ class MutableClassModelImplBuilder(
 class StateFlowImplBuilder(
     private val type: ClassName,
     private val publicProperties: Sequence<KSPropertyDeclaration>,
-    private val immutableDataClassName: ClassName
+    private val immutableDataClassName: ClassName,
 ) {
     fun build() = buildCodeBlock {
         addStatement(
@@ -175,7 +175,7 @@ class StateFlowImplBuilder(
                 .overrideReplayCache()
                 .overrideValue()
                 .overrideCollect()
-                .build()
+                .build(),
         )
     }
 
@@ -186,9 +186,9 @@ class StateFlowImplBuilder(
                 .getter(
                     FunSpec.getterBuilder()
                         .addStatement("return listOf(value)")
-                        .build()
+                        .build(),
                 )
-                .build()
+                .build(),
         )
     }
 
@@ -208,10 +208,10 @@ class StateFlowImplBuilder(
                                             addStatement("%L = _%L.value,", field, field)
                                         }
                                 }
-                            }
+                            },
                         )
-                        .build()
-                ).build()
+                        .build(),
+                ).build(),
         )
     }
 
@@ -230,7 +230,7 @@ class StateFlowImplBuilder(
                             beginControlFlow(
                                 "%M(_atomicExecutor.executing, %L) { params ->",
                                 MemberNames.COMBINE,
-                                publicProperties.joinToString { "_${it.simpleName.asString()}" }
+                                publicProperties.joinToString { "_${it.simpleName.asString()}" },
                             )
 
                             withIndent {
@@ -250,8 +250,8 @@ class StateFlowImplBuilder(
                             addStatement(".collect(collector)")
                         }
                         endControlFlow()
-                    }
-                ).build()
+                    },
+                ).build(),
         )
     }
 }

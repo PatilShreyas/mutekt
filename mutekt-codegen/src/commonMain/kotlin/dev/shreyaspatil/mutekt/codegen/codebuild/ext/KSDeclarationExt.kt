@@ -34,7 +34,7 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 fun Sequence<KSPropertyDeclaration>.eachToProperty(
     name: (KSPropertyDeclaration) -> String = { it.simpleName.asString() },
     type: (KSPropertyDeclaration) -> TypeName = { it.type.toTypeName() },
-    transform: PropertySpec.Builder.(KSPropertyDeclaration) -> Unit = {}
+    transform: PropertySpec.Builder.(KSPropertyDeclaration) -> Unit = {},
 ) = map { PropertySpec.builder(name(it), type(it)).apply { transform(this, it) }.build() }
 
 /**
@@ -47,7 +47,7 @@ fun Sequence<KSPropertyDeclaration>.eachToProperty(
 fun Sequence<KSPropertyDeclaration>.eachToParameter(
     name: (KSPropertyDeclaration) -> String = { it.simpleName.asString() },
     type: (KSPropertyDeclaration) -> TypeName = { it.type.toTypeName() },
-    transform: ParameterSpec.Builder.(KSPropertyDeclaration) -> Unit = {}
+    transform: ParameterSpec.Builder.(KSPropertyDeclaration) -> Unit = {},
 ): Sequence<ParameterSpec> = map { ParameterSpec.builder(name(it), type(it)).apply { transform(this, it) }.build() }
 
 /**

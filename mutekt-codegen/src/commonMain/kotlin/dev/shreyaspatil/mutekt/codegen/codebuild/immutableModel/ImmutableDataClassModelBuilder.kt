@@ -34,7 +34,7 @@ import dev.shreyaspatil.mutekt.codegen.codebuild.ext.getPublicAbstractProperties
  */
 class ImmutableDataClassModelBuilder(
     private val immutableStateInterface: ClassName,
-    private val publicProperties: Sequence<KSPropertyDeclaration>
+    private val publicProperties: Sequence<KSPropertyDeclaration>,
 ) {
     constructor(clazz: KSClassDeclaration) : this(clazz.toClassName(), clazz.getPublicAbstractProperties())
 
@@ -51,7 +51,7 @@ class ImmutableDataClassModelBuilder(
         primaryConstructor(
             FunSpec.constructorBuilder().apply {
                 publicProperties.eachToParameter().forEach { addParameter(it) }
-            }.build()
+            }.build(),
         )
     }
 

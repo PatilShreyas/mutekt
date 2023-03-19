@@ -31,7 +31,7 @@ import dev.shreyaspatil.mutekt.codegen.logging.ErrorMessages
 import dev.shreyaspatil.mutekt.core.annotations.GenerateMutableModel
 
 class MutektCodegenProcessor(
-    environment: SymbolProcessorEnvironment
+    environment: SymbolProcessorEnvironment,
 ) : SymbolProcessor {
 
     private val codeGenerator = environment.codeGenerator
@@ -79,9 +79,9 @@ class MutektCodegenProcessor(
             logger.error(
                 ErrorMessages.hasMutableFields(
                     state.simpleName.asString(),
-                    mutableProperties.map { it.simpleName.asString() }
+                    mutableProperties.map { it.simpleName.asString() },
                 ),
-                state
+                state,
             )
             return false
         }
