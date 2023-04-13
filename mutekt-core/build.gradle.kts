@@ -24,7 +24,9 @@ kotlin {
         }
     }
     ios {
-        isEnabled = false
+        testTask {
+            isEnabled = false
+        }
     }
     mingwX64()
 
