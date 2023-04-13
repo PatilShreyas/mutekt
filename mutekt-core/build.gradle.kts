@@ -23,7 +23,9 @@ kotlin {
             }
         }
     }
-    ios()
+    ios {
+        isEnabled = false
+    }
     mingwX64()
 
     @Suppress("UNUSED_VARIABLE")
