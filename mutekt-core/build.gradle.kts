@@ -12,18 +12,13 @@ kotlin {
         withJava()
     }
     js(IR) {
-        browser {
-            testTask {
-                isEnabled = false
-            }
-        }
-        nodejs {
-            testTask {
-                isEnabled = false
-            }
-        }
+        browser()
+        nodejs()
     }
     ios()
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
     mingwX64()
 
     @Suppress("UNUSED_VARIABLE")
