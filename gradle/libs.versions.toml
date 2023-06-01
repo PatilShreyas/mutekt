@@ -8,7 +8,7 @@ junitJupiter = "5.9.3"
 spotless = "6.18.0"
 mavenPublish = "0.25.2"
 kotlinCompileTesting = "1.5.0"
-kotlinKover = "0.6.1"
+kotlinKover = "0.7.1"
 
 [libraries]
 ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
